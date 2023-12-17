@@ -22,13 +22,13 @@ Auth::routes(['register' => false, 'password.reset' => false, 'password.request'
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::middleware(['auth', 'auth.session'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::get('/admin', function () {
         return view('admin');
     });
 });
 
-Route::middleware(['auth:student', 'auth.session', 'student'])->group(function () {
+Route::middleware(['auth:student', 'student'])->group(function () {
     Route::get('/siswa', function () {
         return view('siswa');
     });
