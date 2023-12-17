@@ -57,7 +57,7 @@ class LoginController extends Controller
             return redirect()->intended('/siswa');
         }
 
-        return back()->withErrors(['username' => 'Invalid credentials']);
+        return back()->withErrors(['username' => 'Akun tidak ditemukan!']);
     }
 
 }
