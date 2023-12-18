@@ -50,11 +50,11 @@ class LoginController extends Controller
         ) {
             $request->session()->regenerate();
 
-            return redirect()->intended('/admin');
+            return redirect()->intended('/dashboard');
         } else if (Auth::guard('student')->attempt(['nisn' => $request->email, 'password' => $request->password], $request->remember)) {
             $request->session()->regenerate();
 
-            return redirect()->intended('/siswa');
+            return redirect()->intended('/');
         }
 
         return back()->withErrors(['username' => 'Akun tidak ditemukan!']);

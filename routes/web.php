@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Dashboard\DashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,22 +15,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return redirect('/login');
-});
-
 Auth::routes(['register' => false, 'password.reset' => false, 'password.request' => false]);
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/admin', function () {
-        return view('admin');
-    });
+    Route::get('/dashboard', [DashboardController::class, 'index']);
 });
 
 Route::middleware(['auth:student', 'student'])->group(function () {
-    Route::get('/siswa', function () {
+    Route::get('/', function () {
         return view('siswa');
     });
 });
