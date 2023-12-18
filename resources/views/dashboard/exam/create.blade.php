@@ -164,8 +164,8 @@
                     $('#pg').addClass('d-flex').show();
                     $('#pg .input-group input').prop('required', true);
                     $('#answer').prop('required', true).show();
-                    $('#textarea').hide();
-                    $('#textarea textarea').prop('required', false).hide();
+                    $('#textarea').show();
+                    $('#textarea textarea').prop('required', true).show();
                 } else if (selectedType == 2) {
                     $('#textarea').show();
                     $('#textarea textarea').prop('required', true).show();
@@ -208,6 +208,7 @@
                         $(this).find('input[name="option_3[]"]').val(parsedData[0].option_3);
                         $(this).find('input[name="option_4[]"]').val(parsedData[0].option_4);
                         $(this).find('input[name="option_5[]"]').val(parsedData[0].option_5);
+                        $(this).find('textarea[name="question[]"]').val(parsedData[0].essay);
                         $(this).find('input[name="answer[]"]').val(parsedData[0].answer);
                     } else if (parsedData[0].type == 2) {
                         $(this).find('select[name="type[]"]').val(parsedData[0].type).change();
@@ -241,8 +242,8 @@
                     clonedForm.find('#pg').addClass('d-flex').show();
                     clonedForm.find('#pg .input-group input').prop('required', true);
                     clonedForm.find('#answer').prop('required', true).show();
-                    clonedForm.find('#textarea').hide();
-                    clonedForm.find('#textarea textarea').prop('required', false).hide();
+                    clonedForm.find('#textarea').show();
+                    clonedForm.find('#textarea textarea').prop('required', true).show();
                 } else if (selectedType == 2) {
                     clonedForm.find('#textarea').show();
                     clonedForm.find('#textarea textarea').prop('required', true).show();
@@ -260,11 +261,12 @@
                 clonedForm.find('input[name="option_3[]"]').val(value.option_3);
                 clonedForm.find('input[name="option_4[]"]').val(value.option_4);
                 clonedForm.find('input[name="option_5[]"]').val(value.option_5);
+                clonedForm.find('textarea[name="question[]"]').val(value.essay);
                 clonedForm.find('input[name="answer[]"]').val(value.answer);
             } else if (value.type == 2) {
                 console.log(value.type);
                 clonedForm.find('select[name="type[]"]').val(value.type).change();
-                clonedForm.find('textarea[name="question[]"]').val(value.type);
+                clonedForm.find('textarea[name="question[]"]').val(value.essay);
                 clonedForm.find('input[name="answer[]"]').val(value.answer);
             }
 
