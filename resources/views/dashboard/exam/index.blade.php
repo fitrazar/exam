@@ -36,3 +36,8 @@
             </div>
     </section>
 @endsection
+@section('script')
+    <script>
+        localStorage.removeItem('clonedFormData');
+    </script>
+@endsection

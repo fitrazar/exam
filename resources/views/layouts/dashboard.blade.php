@@ -16,7 +16,6 @@
     <link rel="stylesheet" href="{{ asset('assets/vendors/fontawesome/css/solid.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendors/fontawesome/css/brands.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendors/fontawesome/css/all.css') }}">
-    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css') }}">
     <link rel="stylesheet"
         href="{{ asset('assets/vendors/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendors/icheck-bootstrap/icheck-bootstrap.min.css') }}">
@@ -46,20 +45,13 @@
 
 
     <script src="{{ asset('assets/vendors/jquery/jquery.min.js') }}"></script>
-    <script src="{{ asset('assets/vendors/jquery-ui/jquery-ui.min.js') }}"></script>
     <script src="{{ asset('assets/vendors/fontawesome/js/all.js') }}"></script>
     <script src="{{ asset('assets/vendors/fontawesome/js/solid.js') }}"></script>
     <script src="{{ asset('assets/vendors/fontawesome/js/brands.js') }}"></script>
     <script src="{{ asset('assets/vendors/fontawesome/js/fontawesome.js') }}"></script>
-    <script>
-        $.widget.bridge('uibutton', $.ui.button)
-    </script>
+
     <script src="{{ asset('assets/vendors/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('assets/vendors/chart.js/Chart.min.js') }}"></script>
-    <script src="{{ asset('assets/vendors/sparklines/sparkline.js') }}"></script>
-    <script src="{{ asset('assets/vendors/jqvmap/jquery.vmap.min.js') }}"></script>
-    <script src="{{ asset('assets/vendors/jqvmap/maps/jquery.vmap.usa.js') }}"></script>
-    <script src="{{ asset('assets/vendors/jquery-knob/jquery.knob.min.js') }}"></script>
     <script src="{{ asset('assets/vendors/moment/moment.min.js') }}"></script>
     <script src="{{ asset('assets/vendors/daterangepicker/daterangepicker.js') }}"></script>
     <script src="{{ asset('assets/vendors/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js') }}"></script>
@@ -83,6 +75,7 @@
     @yield('script')
     <script>
         $(function() {
+
             $("#example1").DataTable({
                 "responsive": true,
                 "lengthChange": false,
