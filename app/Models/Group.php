@@ -21,4 +21,14 @@ class Group extends Model
     {
         return $this->hasMany(Student::class, 'group_id');
     }
+
+    /**
+     * Get all of the exams for the Group
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function exams(): HasMany
+    {
+        return $this->hasMany(Exam::class, 'group_id');
+    }
 }

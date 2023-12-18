@@ -3,23 +3,20 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Student extends Authenticatable
+class Exam extends Model
 {
-    use HasFactory, Notifiable;
+    use HasFactory;
 
-    protected $guard = 'student';
     protected $guarded = ['id'];
 
     protected $with = ['grade', 'major', 'group'];
 
     /**
-     * Get the grade that owns the Student
+     * Get the grade that owns the Exam
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -29,7 +26,7 @@ class Student extends Authenticatable
     }
 
     /**
-     * Get the major that owns the Student
+     * Get the major that owns the Exam
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -39,7 +36,7 @@ class Student extends Authenticatable
     }
 
     /**
-     * Get the group that owns the Student
+     * Get the group that owns the Exam
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -49,15 +46,14 @@ class Student extends Authenticatable
     }
 
     /**
-     * Get all of the answer for the Student
+     * Get all of the question for the Exam
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function answers(): HasMany
+    public function questions(): HasMany
     {
-        return $this->hasMany(Answer::class, 'student_id');
+        return $this->hasMany(Question::class, 'exam_id');
     }
-
 
     /**
      * Get all of the result for the Exam
@@ -66,29 +62,7 @@ class Student extends Authenticatable
      */
     public function results(): HasMany
     {
-        return $this->hasMany(Result::class, 'student_id');
+        return $this->hasMany(Result::class, 'exam_id');
     }
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
-    protected $hidden = [
-        'password', 'remember_token',
-    ];
-
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'password' => 'hashed',
-    ];
-
-    public function getAuthIdentifierName()
-    {
-        return 'nisn';
-    }
 }

@@ -21,4 +21,14 @@ class Grade extends Model
     {
         return $this->hasMany(Student::class, 'grade_id');
     }
+
+    /**
+     * Get all of the exams for the Grade
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function exams(): HasMany
+    {
+        return $this->hasMany(Exam::class, 'grade_id');
+    }
 }

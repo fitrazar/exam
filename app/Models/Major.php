@@ -21,4 +21,14 @@ class Major extends Model
     {
         return $this->hasMany(Student::class, 'major_id');
     }
+
+    /**
+     * Get all of the exams for the Major
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function exams(): HasMany
+    {
+        return $this->hasMany(Exam::class, 'major_id');
+    }
 }
