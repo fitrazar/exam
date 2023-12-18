@@ -2,6 +2,11 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Dashboard\ExamController;
+use App\Http\Controllers\Dashboard\GradeController;
+use App\Http\Controllers\Dashboard\GroupController;
+use App\Http\Controllers\Dashboard\MajorController;
+use App\Http\Controllers\Dashboard\StudentController;
 use App\Http\Controllers\Dashboard\DashboardController;
 
 /*
@@ -19,8 +24,17 @@ Auth::routes(['register' => false, 'password.reset' => false, 'password.request'
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::middleware(['auth'])->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'index']);
+Route::middleware(['auth'])->prefix('dashboard')->group(function () {
+    Route::get('/', [DashboardController::class, 'index']);
+
+    Route::resource('/grade', GradeController::class)->except('show');
+    Route::resource('/major', MajorController::class)->except('show');
+    Route::resource('/group', GroupController::class)->except('show');
+    Route::resource('/student', StudentController::class)->except('show');
+    Route::resource('/exam', ExamController::class)->except('show');
+
+    // Import
+    Route::post('/student/import', [StudentController::class, 'import']);
 });
 
 Route::middleware(['auth:student', 'student'])->group(function () {

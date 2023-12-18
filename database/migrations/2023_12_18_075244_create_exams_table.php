@@ -17,6 +17,7 @@ return new class extends Migration {
             $table->foreignId('group_id')->constrained()->onDelete('cascade');
             $table->string('title');
             $table->text('description');
+            $table->date('date_start');
             $table->time('time_start');
             $table->time('time_end');
             $table->timestamps();
