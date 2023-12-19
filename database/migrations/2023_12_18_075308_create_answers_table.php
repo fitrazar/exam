@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->foreignId('question_id')->constrained()->onDelete('cascade');
             $table->foreignId('student_id')->constrained()->onDelete('cascade');
             $table->longText('answer');
+            $table->string('status')->comment('benar,salah,kurang');
             $table->timestamps();
         });
     }

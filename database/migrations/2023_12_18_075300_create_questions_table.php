@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->longText('question');
             $table->integer('score');
             $table->boolean('is_required')->default(1);
-            $table->tinyInteger('type')->comment('0=PG,1=PG Kompleks,2=Penjodohan,3=Essay');
+            $table->tinyInteger('type')->comment('0=PG,1=PG Kompleks,2=Essay');
             $table->timestamps();
         });
     }

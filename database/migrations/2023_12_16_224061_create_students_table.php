@@ -21,6 +21,8 @@ return new class extends Migration {
             $table->string('phone');
             $table->integer('point');
             $table->string('password');
+            $table->timestamp('last_seen')->nullable();
+            $table->string('user_agent')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
