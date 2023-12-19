@@ -17,7 +17,7 @@
                         <div class="card-body">
                             <a href="{{ url('/dashboard/exam') }}" class="mb-4 btn btn-info">Kembali</a>
 
-                            <form class="row g-3" action="{{ url('/dashboard/exam/' . $exam->id) }}" method="POST">
+                            <form class="row g-3" action="{{ url('/dashboard/exam/' . $exam->code) }}" method="POST">
                                 @method('PUT')
                                 @csrf
                                 <div class="col-6 mb-3">

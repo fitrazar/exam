@@ -27,7 +27,7 @@
                                 <x-table-heading th="No|Kode|Judul|Kelas|Tanggal|Action" />
                                 <x-table-body :items="$exams" key="code|title|has_relation|date_start"
                                     relation="grade_name|major_acronym|group_number" url="/dashboard/exam/"
-                                    route="id" />
+                                    route="code" />
                             </table>
                         </div>
 

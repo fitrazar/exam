@@ -8,7 +8,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>@yield('title')</title>
     <link rel="stylesheet" href="{{ asset('assets/vendors/fontawesome/css/fontawesome.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendors/fontawesome/css/solid.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendors/fontawesome/css/brands.css') }}">
@@ -34,7 +34,8 @@
     <script src="{{ asset('assets/vendors/fontawesome/js/solid.js') }}"></script>
     <script src="{{ asset('assets/vendors/fontawesome/js/brands.js') }}"></script>
     <script src="{{ asset('assets/vendors/fontawesome/js/fontawesome.js') }}"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.12.0/dist/cdn.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <x-livewire-alert::scripts />
 </body>
 
 </html>

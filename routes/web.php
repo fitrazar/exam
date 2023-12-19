@@ -1,5 +1,7 @@
 <?php
 
+use App\Livewire\IndexExam;
+use App\Livewire\IndexStudent;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Dashboard\ExamController;
@@ -39,7 +41,6 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function () {
 });
 
 Route::middleware(['auth:student', 'student'])->group(function () {
-    Route::get('/', function () {
-        return view('siswa');
-    });
+    Route::get('/', IndexStudent::class);
+    Route::get('/exam/{exam}', IndexExam::class);
 });

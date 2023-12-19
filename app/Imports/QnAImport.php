@@ -13,7 +13,9 @@ class QnAImport implements ToModel, WithHeadingRow
 {
     public function model(array $row)
     {
-        $id_exam = Exam::where('code', $row['kode_ujian'])->first()->id;
+        $kodeUjian = preg_replace('/\s+/', '', $row['kode_ujian']);
+
+        $id_exam = Exam::where('code', $kodeUjian)->first()->id;
 
         if (!empty($row['pg_jika_tipe_nya_pg_pg_kompleks'])) {
             $pg = str_replace('|', "\n", $row['pg_jika_tipe_nya_pg_pg_kompleks']);

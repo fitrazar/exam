@@ -11,7 +11,7 @@ class Exam extends Model
 {
     use HasFactory;
 
-    protected $guarded = ['id'];
+    protected $guarded = [];
 
     protected $with = ['grade', 'major', 'group'];
 
@@ -63,6 +63,11 @@ class Exam extends Model
     public function results(): HasMany
     {
         return $this->hasMany(Result::class, 'exam_id');
+    }
+
+    public function getRouteKeyName()
+    {
+        return 'code';
     }
 
 }
