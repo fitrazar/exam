@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->foreignId('grade_id')->constrained()->onDelete('cascade');
             $table->foreignId('major_id')->constrained()->onDelete('cascade');
             $table->foreignId('group_id')->constrained()->onDelete('cascade');
+            $table->string('code');
             $table->string('title');
             $table->text('description');
             $table->date('date_start');

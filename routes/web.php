@@ -32,9 +32,10 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function () {
     Route::resource('/group', GroupController::class)->except('show');
     Route::resource('/student', StudentController::class)->except('show');
     Route::resource('/exam', ExamController::class)->except('show');
-
+    Route::get('/exam/question/{question}/delete', [ExamController::class, 'deleteQuestion']);
     // Import
     Route::post('/student/import', [StudentController::class, 'import']);
+    Route::post('/exam/import', [ExamController::class, 'import']);
 });
 
 Route::middleware(['auth:student', 'student'])->group(function () {

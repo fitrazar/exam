@@ -20,11 +20,12 @@
 
                         <div class="card-body">
 
-                            <x-table-button create="/dashboard/exam/create" export="" import="" />
+                            <x-table-button create="/dashboard/exam/create" export=""
+                                import="/dashboard/exam/import" />
 
                             <table id="example2" class="table table-bordered table-hover">
-                                <x-table-heading th="No|Judul|Kelas|Tanggal|Action" />
-                                <x-table-body :items="$exams" key="title|has_relation|date_start"
+                                <x-table-heading th="No|Kode|Judul|Kelas|Tanggal|Action" />
+                                <x-table-body :items="$exams" key="code|title|has_relation|date_start"
                                     relation="grade_name|major_acronym|group_number" url="/dashboard/exam/"
                                     route="id" />
                             </table>
