@@ -3,6 +3,10 @@
 <div>
 
     <div class="container">
+
+        {{-- <i id="fs" class="fa-solid fa-maximize fs-2" style="color: white;" role="button" wire:click="fullscreen"
+            wire:loading.attr="disabled"></i> --}}
+
         <div class="row justify-content-center">
             <div class="col-md-8">
 
@@ -102,7 +106,7 @@
                                                         <input class="form-check-input" type="radio"
                                                             name="radio_{{ $radioId }}"
                                                             id="radio_{{ $radioId }}" value="{{ $key }}"
-                                                            wire:model.defer="answers.{{ $question->id }}">
+                                                            wire:model="answers.{{ $question->id }}">
                                                         <label class="form-check-label"
                                                             for="radio_{{ $radioId }}">
                                                             {{ $pilihan }}
@@ -156,7 +160,7 @@
                                                             name="checkbox_{{ $checkboxId }}"
                                                             id="checkbox_{{ $checkboxId }}"
                                                             value="{{ $key }}"
-                                                            wire:model.defer="answers.{{ $question->id }}.{{ $key }}">
+                                                            wire:model="answers.{{ $question->id }}.{{ $key }}">
                                                         <label class="form-check-label"
                                                             for="checkbox_{{ $checkboxId }}">
                                                             {{ $pilihan }}
@@ -190,8 +194,8 @@
                                                     ({{ $question->score }}
                                                     poin)
                                                 </p>
-                                                <div class="form-group mb-3">
-                                                    <textarea wire:model.defer="answers.{{ $question->id }}" class="form-control" name="answers{{ $question->id }}"
+                                                <div class="form-group mb-3" wire:ignore>
+                                                    <textarea wire:model="answers.{{ $question->id }}" class="form-control" name="answers{{ $question->id }}"
                                                         id="answers{{ $question->id }}"></textarea>
                                                 </div>
                                                 <hr>
@@ -220,7 +224,26 @@
 </div>
 @script
     <script>
+        document.addEventListener("visibilitychange", () => {
+            if (document.visibilityState !== 'visible') {
+                $wire.dispatch('hayo');
+                document.title = 'Aku tau kamu nyontek';
+            } else {
+                document.title = 'Ujian';
+            }
+        });
         document.addEventListener('livewire:initialized', () => {
+
+            Livewire.on('enterFullscreen', (event) => {
+                const element = document.documentElement;
+                const requestFullScreen = element.requestFullscreen || element.webkitRequestFullscreen ||
+                    element.mozRequestFullScreen || element.msRequestFullscreen;
+
+                if (requestFullScreen) {
+                    requestFullScreen.call(element);
+                }
+            });
+
             Livewire.hook('element.init', (component, el) => {
 
                 const auth = localStorage.getItem('auth');
@@ -228,7 +251,7 @@
                     let inputAll = $wire.$el.querySelectorAll('input, textarea');
 
                     inputAll.forEach((form) => {
-                        let fieldName1 = form.getAttribute('wire:model.defer');
+                        let fieldName1 = form.getAttribute('wire:model');
                         let storedValue = localStorage.getItem(fieldName1);
                         // console.log(storedValue);
 
@@ -256,7 +279,7 @@
 
                 inputElements.forEach((input) => {
                     input.addEventListener('input', function() {
-                        let fieldName = input.getAttribute('wire:model.defer');
+                        let fieldName = input.getAttribute('wire:model');
                         let fieldValue = input.value;
                         let checkbox = input.checked;
                         localStorage.setItem('auth',

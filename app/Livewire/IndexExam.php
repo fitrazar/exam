@@ -9,6 +9,7 @@ use App\Models\Student;
 use Livewire\Component;
 use App\Models\Question;
 use Illuminate\Support\Str;
+use Livewire\Attributes\On;
 use App\Models\AnswerOption;
 use Illuminate\Support\Carbon;
 use Livewire\Attributes\Validate;
@@ -18,7 +19,7 @@ class IndexExam extends Component
 {
     use LivewireAlert;
 
-    public $exam, $count;
+    public $exam, $count, $penalty = 0;
     public $currentStep = 0;
     #[Validate([
         'answers' => 'required',
@@ -56,9 +57,29 @@ class IndexExam extends Component
         $this->currentStep = $step;
     }
 
+    #[On('hayo')]
+    public function ketauan()
+    {
+        $this->penalty += 1;
+        $this->alert('info', 'Hayo abis nyontek ya', [
+            'position' => 'center',
+            'timer' => '',
+            'toast' => false,
+            'showConfirmButton' => true,
+            'onConfirmed' => '',
+            'confirmButtonText' => 'IYA',
+        ]);
+    }
+
+    public function fullscreen()
+    {
+        $this->dispatch('enterFullscreen');
+    }
+
     public function zeroStepSubmit()
     {
         $this->currentStep = 1;
+        $this->dispatch('enterFullscreen');
     }
 
     public function firstStepSubmit()
@@ -74,7 +95,7 @@ class IndexExam extends Component
 
     public function submitForm()
     {
-        // dd($this->answers);
+        // dd($this->penalty);
         $this->validate();
         if (count($this->answers) < $this->count) {
             return $this->alert('error', 'Jawaban Belum Terisi Semua!', [
@@ -89,6 +110,7 @@ class IndexExam extends Component
 
 
         $score = 0;
+
         // dd($this->answers);
         foreach ($this->answers as $questionId => $userAnswer) {
             $status = '';
@@ -157,12 +179,17 @@ class IndexExam extends Component
         $current_time = now();
         $time_end = Carbon::createFromFormat('H:i:s', $this->exam->time_end);
         $is_late = '';
+        $student = Student::find(auth()->user()->id);
+        if ($this->penalty > 0) {
+            $student->point -= $this->penalty;
+            $student->save();
+        }
 
         if ($current_time > $time_end) {
             $is_late = 'Terlambat ' . $current_time->diffInMinutes($time_end) . ' Menit';
             $late_duration = $current_time->diffInMinutes($time_end);
             $penalty_points = $late_duration * 2;
-            $student = Student::find(auth()->user()->id);
+
             $student->point -= $penalty_points;
             $student->save();
         } else {

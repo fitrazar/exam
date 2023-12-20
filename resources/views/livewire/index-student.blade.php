@@ -28,10 +28,11 @@
                     {{ $greeting }} {{ auth()->user()->name }}
 
                     <br>
-                    <p>Kamu ada {{ count($exams) }} ulangan hari ini.</p>
+                    <p>Kamu ada {{ count($exams) }} ujian hari ini.</p>
 
                     <div class="table-responsive">
-                        <table class="table">
+                        <table class="table table-hover table-striped table-bordered">
+                            <caption>Daftar ujian hari ini</caption>
                             <thead>
                                 <tr>
                                     <th scope="col">#</th>
@@ -63,7 +64,7 @@
     </div>
 </div>
 @script
-    <script></script>
-    localStorage.clear();
+    <script>
+        localStorage.clear();
     </script>
 @endscript
