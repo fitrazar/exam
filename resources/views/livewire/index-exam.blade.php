@@ -2,13 +2,23 @@
 
 <div>
 
-    <div class="container">
 
-        {{-- <i id="fs" class="fa-solid fa-maximize fs-2" style="color: white;" role="button" wire:click="fullscreen"
-            wire:loading.attr="disabled"></i> --}}
+    <div class="container">
 
         <div class="row justify-content-center">
             <div class="col-md-8">
+
+                <div class="split">
+                    <div class="card card-margin">
+                        <div class="card-body pt-0 p-3">
+                            <div class="widget-49">
+                                <div class="widget-49-title-wrapper">
+                                    <h2>Mau split screen kah?</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="card-custom card-margin">
                     <div class="{{ $currentStep == 0 ? 'd-block' : 'd-none' }}">
@@ -96,7 +106,7 @@
                                                         }
                                                     }
                                                 @endphp
-                                                <p class="widget-49-head mt-3">{{ $questionNumber }}.
+                                                <p class="widget-49-head mt-3 user-select-none">{{ $questionNumber }}.
                                                     {{ Str::before($question->question, 'A. ') }}
                                                     ({{ $question->score }}
                                                     poin)
@@ -149,7 +159,7 @@
                                                     }
                                                 @endphp
 
-                                                <p class="widget-49-head mt-3">{{ $questionNumber }}.
+                                                <p class="widget-49-head mt-3 user-select-none">{{ $questionNumber }}.
                                                     {{ Str::before($question->question, 'A. ') }}
                                                     ({{ $question->score }}
                                                     poin)
@@ -189,7 +199,7 @@
 
                                         @foreach ($exam->questions as $key => $question)
                                             @if ($question->type == 2)
-                                                <p class="widget-49-head mt-3">{{ $questionNumber }}.
+                                                <p class="widget-49-head mt-3 user-select-none">{{ $questionNumber }}.
                                                     {{ $question->question }}
                                                     ({{ $question->score }}
                                                     poin)
@@ -256,16 +266,12 @@
                         // console.log(storedValue);
 
                         if (storedValue !== null) {
-                            // Atur nilai form sesuai dengan nilai yang ada di local storage
                             if (form.type === 'checkbox' || form.type === 'radio') {
-                                // Jika form adalah checkbox atau radio button
                                 form.checked = storedValue;
                             } else {
-                                // Jika form adalah form teks atau textarea
                                 form.value = storedValue;
                             }
                             // console.log($wire.$el.getAttribute('id'));
-                            // Memperbarui data di Livewire setelah mengatur nilai input
                             Livewire.find($wire.$id).set(fieldName1, storedValue);
                         }
                     });
@@ -297,7 +303,6 @@
 
                         }
 
-                        // Simpan nilai input ke local storage dengan nama field sebagai kunci
                     });
                 });
             });

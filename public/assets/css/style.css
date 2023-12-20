@@ -3,6 +3,10 @@ body {
     background: linear-gradient(to right, #0062E6, #33AEFF);
 }
 
+.split {
+    display: none;
+}
+
 .card-margin {
     margin-bottom: 1.875rem;
     padding: 10px;
@@ -324,4 +328,14 @@ body {
 
 .widget-49 .widget-49-meeting-action a {
     text-transform: uppercase;
+}
+
+@media screen and (min-height: 100px) and (max-height: 555px) {
+    .split {
+        display: block;
+    }
+
+    .card-custom {
+        display: none;
+    }
 }

@@ -110,31 +110,40 @@ class IndexExam extends Component
 
 
         $score = 0;
+        ksort($this->answers);
 
-        // dd($this->answers);
         foreach ($this->answers as $questionId => $userAnswer) {
-            $status = '';
             if (!is_array($userAnswer)) {
-                $correctAnswer = AnswerOption::whereIn('question_id', $keys)->whereHas('question', function ($query) {
-                    $query->where('type', 0);
-                })->pluck('option');
-                foreach ($correctAnswer as $ca) {
-                    if ($userAnswer === $ca) {
+                if (Str::of($userAnswer)->length() <= 1) {
+                    $correctAnswer = AnswerOption::where('question_id', $questionId)->whereHas('question', function ($query) {
+                        $query->where('type', 0);
+                    })->where('option', $userAnswer)->first();
+                    // sort($correctAnswer);
+                    // dd($correctAnswer);
+                    if ($correctAnswer) {
+                        // dd('benar');
                         $status = "Benar";
                         $score += 100 / count($this->answers);
                     } else {
+                        // dd('salah');
                         $status = "Salah";
                     }
-                }
 
-                $correctAnswerEssay = AnswerOption::whereIn('question_id', $keys)->whereHas('question', function ($query) {
-                    $query->where('type', 2);
-                })->pluck('option');
-                if (Str::of($userAnswer)->length() > 1) {
-                    foreach ($correctAnswerEssay as $cae) {
-                        $levenshteinDistance = levenshtein($cae, $userAnswer);
-                        $thresholdKurang = 20;
-                        $thresholdBenar = 15;
+
+                } else {
+                    $correctAnswerEssay = AnswerOption::where('question_id', $questionId)->whereHas('question', function ($query) {
+                        $query->where('type', 2);
+                    })->first();
+
+                    if ($correctAnswerEssay) {
+                        $levenshteinDistance = levenshtein($correctAnswerEssay->option, $userAnswer);
+                        if (Str::of($correctAnswerEssay->option)->length() <= 55) {
+                            $thresholdKurang = 20;
+                            $thresholdBenar = 15;
+                        } else {
+                            $thresholdKurang = 200;
+                            $thresholdBenar = 160;
+                        }
                         if ($levenshteinDistance <= $thresholdKurang && $levenshteinDistance >= $thresholdBenar) {
                             $status = "Kurang";
                             $score += 50 / count($this->answers);
@@ -145,28 +154,43 @@ class IndexExam extends Component
                             // dd($levenshteinDistance);
                             $status = "Salah";
                         }
+                    } else {
+                        // dd('salah');
+                        $status = "Salah";
                     }
+
                 }
             } elseif (is_array($userAnswer)) {
-                $correctOptions = AnswerOption::whereIn('question_id', $keys)->whereHas('question', function ($query) {
-                    $query->where('type', 1);
-                })->pluck('option');
-                foreach ($correctOptions as $co) {
-                    $co = explode('|', $co);
-                    sort($co);
+                $userOptions = array_keys(array_filter($userAnswer));
+                sort($userOptions);
+                $userAnswer = implode('|', $userOptions);
 
-                    $userOptions = array_keys(array_filter($userAnswer));
-                    sort($userOptions);
-                    $userAnswer = implode('|', $userOptions);
-                    if ($userOptions === $co) {
+                $correctOptions = AnswerOption::where('question_id', $questionId)->whereHas('question', function ($query) {
+                    $query->where('type', 1);
+                })->where('option', $userAnswer)->first();
+                if ($correctOptions) {
+
+                    $ao = explode('|', $userAnswer);
+                    sort($ao);
+                    $co = explode('|', $correctOptions->option);
+                    sort($co);
+                    // dd($co);
+
+                    $userAnswer = implode('|', $ao);
+                    if ($ao == $co) {
                         $status = "Benar";
                         $score += 100 / count($this->answers);
                     } else {
                         $status = "Salah";
                     }
+                } else {
+                    // dd('salah');
+                    $status = "Salah";
                 }
+
             }
 
+            // dd($status);
             Answer::create([
                 'question_id' => $questionId,
                 'student_id' => auth()->user()->id,
