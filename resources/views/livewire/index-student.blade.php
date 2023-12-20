@@ -1,6 +1,12 @@
 @section('title', 'Siswa')
 <div class="container">
     <div class="row justify-content-center">
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+
         <div class="col-md-8">
             <div class="card border-0 shadow rounded-3 my-2">
                 <div class="card-header">Siswa Page</div>
@@ -38,22 +44,13 @@
                             </thead>
                             <tbody class="table-group-divider">
                                 @foreach ($exams as $exam)
-                                    @php
-                                        $currentTime = now();
-
-                                        $timeStart = \Carbon\Carbon::createFromFormat('H:i:s', $exam->time_start);
-                                        $timeEnd = \Carbon\Carbon::createFromFormat('H:i:s', $exam->time_end);
-                                        $dateStart = \Carbon\Carbon::createFromFormat('Y-m-d', $exam->date_start);
-
-                                        $isActive = $currentTime->lte($timeStart) || $currentTime->gte($timeEnd);
-                                    @endphp
                                     <tr>
                                         <th scope="row">{{ $loop->iteration }}</th>
                                         <td>{{ $exam->code }}</td>
                                         <td>{{ $exam->title }}</td>
                                         <td>{{ $exam->time_start }} - {{ $exam->time_end }}</td>
-                                        <td>{{ $isActive ? 'Tidak Aktif' : 'Aktif' }}</td>
-                                        <td>{!! $isActive ? '-' : '<a href="' . url('/exam/' . $exam->code) . '" wire:navigate>Ikut</a>' !!}</td>
+                                        <td>{{ $exam->status }}</td>
+                                        <td>{!! $exam->joinStatus !!}</td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -66,7 +63,7 @@
     </div>
 </div>
 @script
-    <script>
-        localStorage.clear();
+    <script></script>
+    localStorage.clear();
     </script>
 @endscript

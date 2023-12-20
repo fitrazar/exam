@@ -3,6 +3,9 @@
 namespace App\Livewire;
 
 use App\Models\Exam;
+use App\Models\Answer;
+use App\Models\Result;
+use App\Models\Student;
 use Livewire\Component;
 use App\Models\Question;
 use Illuminate\Support\Str;
@@ -84,17 +87,21 @@ class IndexExam extends Component
         $keys = array_keys($this->answers);
         // $answer = AnswerOption::whereIn('question_id', $keys)->get();
 
+
         $score = 0;
-
-        foreach ($this->answers as $userAnswer) {
+        // dd($this->answers);
+        foreach ($this->answers as $questionId => $userAnswer) {
+            $status = '';
             if (!is_array($userAnswer)) {
-
                 $correctAnswer = AnswerOption::whereIn('question_id', $keys)->whereHas('question', function ($query) {
                     $query->where('type', 0);
                 })->pluck('option');
                 foreach ($correctAnswer as $ca) {
                     if ($userAnswer === $ca) {
+                        $status = "Benar";
                         $score += 100 / count($this->answers);
+                    } else {
+                        $status = "Salah";
                     }
                 }
 
@@ -104,9 +111,17 @@ class IndexExam extends Component
                 if (Str::of($userAnswer)->length() > 1) {
                     foreach ($correctAnswerEssay as $cae) {
                         $levenshteinDistance = levenshtein($cae, $userAnswer);
-                        $threshold = 20;
-                        if ($levenshteinDistance <= $threshold) {
+                        $thresholdKurang = 20;
+                        $thresholdBenar = 15;
+                        if ($levenshteinDistance <= $thresholdKurang && $levenshteinDistance >= $thresholdBenar) {
+                            $status = "Kurang";
+                            $score += 50 / count($this->answers);
+                        } else if ($levenshteinDistance <= $thresholdBenar) {
+                            $status = "Benar";
                             $score += 100 / count($this->answers);
+                        } else {
+                            // dd($levenshteinDistance);
+                            $status = "Salah";
                         }
                     }
                 }
@@ -120,19 +135,51 @@ class IndexExam extends Component
 
                     $userOptions = array_keys(array_filter($userAnswer));
                     sort($userOptions);
-
+                    $userAnswer = implode('|', $userOptions);
                     if ($userOptions === $co) {
+                        $status = "Benar";
                         $score += 100 / count($this->answers);
+                    } else {
+                        $status = "Salah";
                     }
                 }
             }
+
+            Answer::create([
+                'question_id' => $questionId,
+                'student_id' => auth()->user()->id,
+                'answer' => $userAnswer,
+                'status' => $status,
+            ]);
         }
         $score = min(100, $score);
-        dd($score);
+
+        $current_time = now();
+        $time_end = Carbon::createFromFormat('H:i:s', $this->exam->time_end);
+        $is_late = '';
+
+        if ($current_time > $time_end) {
+            $is_late = 'Terlambat ' . $current_time->diffInMinutes($time_end) . ' Menit';
+            $late_duration = $current_time->diffInMinutes($time_end);
+            $penalty_points = $late_duration * 2;
+            $student = Student::find(auth()->user()->id);
+            $student->point -= $penalty_points;
+            $student->save();
+        } else {
+            $is_late = 'Selesai';
+        }
+        Result::create([
+            'exam_id' => $this->exam->id,
+            'student_id' => auth()->user()->id,
+            'total_score' => $score,
+            'status' => $is_late,
+        ]);
 
 
         // dd($this->first_name);
         $this->reset('answers');
+        session()->flash('success', 'Kamu berhasil mengikuti ujian.');
+        $this->redirect('/');
     }
 
 }
