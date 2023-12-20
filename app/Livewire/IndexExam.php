@@ -7,6 +7,7 @@ use Livewire\Component;
 use App\Models\Question;
 use Illuminate\Support\Str;
 use App\Models\AnswerOption;
+use Illuminate\Support\Carbon;
 use Livewire\Attributes\Validate;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 
@@ -15,7 +16,7 @@ class IndexExam extends Component
     use LivewireAlert;
 
     public $exam, $count;
-    public $currentStep = 1;
+    public $currentStep = 0;
     #[Validate([
         'answers' => 'required',
         'answers.*' => 'required',
@@ -30,16 +31,31 @@ class IndexExam extends Component
     {
         $this->exam = $exam;
         $this->count = $exam->questions()->count();
+
     }
 
     public function render()
     {
-        return view('livewire.index-exam')->extends('layouts.app')->section('content');
+
+        $time_start = Carbon::createFromFormat('H:i:s', $this->exam->time_start);
+        $time_end = Carbon::createFromFormat('H:i:s', $this->exam->time_end);
+
+        $diffInHours = $time_start->diffInHours($time_end);
+
+        $diffInMinutes = $time_start->diffInMinutes($time_end);
+
+
+        return view('livewire.index-exam', compact('diffInMinutes'))->extends('layouts.app')->section('content');
     }
 
     public function back($step)
     {
         $this->currentStep = $step;
+    }
+
+    public function zeroStepSubmit()
+    {
+        $this->currentStep = 1;
     }
 
     public function firstStepSubmit()

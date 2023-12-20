@@ -2,7 +2,7 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="card">
+            <div class="card border-0 shadow rounded-3 my-2">
                 <div class="card-header">Siswa Page</div>
                 @php
                     $time = date('H');
@@ -65,3 +65,8 @@
         </div>
     </div>
 </div>
+@script
+    <script>
+        localStorage.clear();
+    </script>
+@endscript
